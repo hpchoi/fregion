@@ -95,6 +95,6 @@ cov.m.to.cov.fd <- function(cov.m, eval.points, basisobj){
   e.cov.m <- eigen(cov.m)
   basis.evaluated <- eval.basis(eval.points, basisobj)
   M <- t(as.matrix(basis.evaluated)) %*% e.cov.m$vectors
-  coefs <- M %*% diag(e.cov.m$values) %*% t(M) #/ length(eval.points)
+  coefs <- M %*% diag(e.cov.m$values) %*% t(M)
   bifd(coefs,basisobj,basisobj)
 }
