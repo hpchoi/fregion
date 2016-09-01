@@ -5,7 +5,9 @@ Version: 0.01
 Date: 2016-09-01
 Authors@R: person("Hyunphil", "Choi", email = "phil0808@gmail.com", role = c("aut", "cre"))
 Description: A sample code for inferential tools for functional data analysis. Based on hyper-ellipsoid and hyper-retangular confidence regions in function space, performs hypothesis tests and visulizes those regions as bands (for ellipsoid regions), or marginal intervals (for rectangular regions).
-License:
-Imports: CompQuadForm, fda
+License: GPL-3
+Imports:
+     CompQuadForm,
+     fda
 LazyData: TRUE
 RoxygenNote: 5.0.1
