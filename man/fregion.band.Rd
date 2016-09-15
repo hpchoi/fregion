@@ -9,38 +9,76 @@ fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
   sim.size = 10000)
 }
 \arguments{
-\item{x}{Observed function. It can be either a vector, of fd object in 'fda' package.}
+\item{x}{Functional parameter estimate. It can be either a vector or \link{fd} object from \link{fda}.}
 
-\item{cov}{The covaraicne operator (as matrix) for the random function x.}
+\item{cov}{N * Cov(X), in which X is the functional estimator. It can be either matrix or \link{bifd} object from \link{fda}. The eigen decomposition of Cov(X) can be used instead.}
 
-\item{N}{Sample size. It should be '1' if 'cov' is the covariance operator for 'x' itself. If 'x' is the mean of an i.i.d. sample of size 'N' and the 'cov' is the covariance operator of each unit in the sample, then this 'N' can be used here.}
+\item{N}{It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.}
 
-\item{type}{This specifies which bands to be constructed. It should be a collection of the followings : "Bs", "BEc", "BEc1".}
+\item{type}{This specifies which confidence bands are to be constructed.
+\itemize{
+  \item BEc The suggested modified Scheff\'e style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
+  \item BEc1 Another modified Scheff\'e style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose)
+  \item Bs Parametric bootstrap simultaneous confidence band, similar to appeard in Degras(2011) (for comparision purpose)
+  \item naive-t A collection of point-wise t-intervals. (for comparision purpose)
+  \item BEPC.x Scheff\'e band from 'x' dimensional chi-square ellipse. (for comparision purpose)
+}}
 
 \item{conf.level}{A vector of confidence levels for the bands to achieve.}
 
-\item{grid.size}{This determines on how fine grid the bands will be constructed. Note that this parameter is used only when 'x' is fd object and 'cov' is bifd object.}
+\item{grid.size}{This determines on how fine grid the bands will be constructed before converted as an `fd' object. This parameter is used only when 'x' is fd object and 'cov' is bifd object.}
 
-\item{inv.method}{(Currently Not Used) This determines how the inverse of the sum of chi squares distribution will be achieved. It can be either "gamma.approx", or "inv.imhof".}
+\item{inv.method}{(Currently Not Used) This determines how the inverse of the sum of chi squares distribution will be achieved. It can be either "gamma.approx", or "inv.imhof". Currently, only "gamma.approx" works.}
 
 \item{prec}{(Currently Not Used) This determines the accuracy of imhof. It's used only when inv.method is inv.imhof.}
 
-\item{sim.size}{This determines the simulation size for Bs}
+\item{sim.size}{This determines bootstrap sample size for Bs}
 }
 \value{
-bands returns bands
+fregion.band Either a collection of vector valued bands or `fd' object whose objectname is changed to fregion.band.
 }
 \description{
 Make confidence bands
 }
 \examples{
-p <- 100 ; N <- 50
-grid <- make.grid(p)
-mu <- mean.f.poly(grid,c(0,1)) ; names(mu) <- grid
-cov.m <- make.cov.m(cov.f=cov.f.st.matern, grid=grid, cov.f.params=c(2/3,1,1/4))
-X <- make.sample(mu,cov.m,N)
-hat.mu <- rowMeans(X)
-hat.cov.m <- crossprod(X - hat.mu) / (N-1)
-fregion.band(hat.mu, hat.cov.m, N, type=c("Bs","BEc"), conf.level=c(0.90,0.95))
+# 1. Vector/matrix version
+
+# Generate a sample
+p = 200 ; N = 80 ; rangeval = c(0,1)
+grid = make.grid(p, rangevals=rangeval)
+mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+e.cov.m = eigen(cov.m)
+x = make.sample(mu,cov.m,N)
+
+# Find the estimate and covariance
+hat.mu = rowMeans(x)
+hat.cov.m = crossprod(t(X - hat.mu)) / (N-1)
+e.hat.cov.m = eigen(hat.cov.m)   # <- This is optional and can be provide into the functions instead of hat.cov.m below.
+
+# Make and visualize/compare confidence bands
+b <- fregion.band(hat.mu,hat.cov.m,N=N,type=c("Bs","BEc","BEPC.10","naive.t"),conf.level=c(0.95))
+plot(b)
+
+
+# 2. fd/bifd version
+
+# create basis, convert vector/matrix into fd/bifd objects.
+require(fda)
+nbasis <- round(p*0.9)
+fd.basis <- create.bspline.basis(rangeval,nbasis)
+mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
+mu.fd <- Data2fd(names(mu),mu,fd.basis)
+x.fd <- Data2fd(rownames(x),x,fd.basis)
+cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
+hat.mu.fd <- mean.fd(x.fd)
+hat.cov.fd <- var.fd(x.fd)
+e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
+
+# Make and visualize/compare confidence bands.
+b.fd <- fregion.band(hat.mu.fd,hat.cov.fd,N=N,type=c("Bs","BEc"), conf.level=c(0.95, 0.9))
+plot(b.fd)
+
 }
 

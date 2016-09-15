@@ -1,4 +1,5 @@
 # Supplementary functions of other functions.
+
 #' @export
 sf.f1 <- function(z){ z * exp(z^2/2) * pnorm2(z) } ###### Make f1 function
 #' @export

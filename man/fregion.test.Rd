@@ -2,48 +2,81 @@
 % Please edit documentation in R/fregion.test.R
 \name{fregion.test}
 \alias{fregion.test}
-\title{Perform a hypothesis test based on a functional confidence region}
+\title{Perform hypothesis test(s) based on functional confidence region(s).}
 \usage{
 fregion.test(x, x0 = NULL, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
   prec = NULL, hat.cov = NULL, df = NULL)
 }
 \arguments{
-\item{x}{Observed function. It can be either a vector, of fd object in 'fda' package.}
+\item{x}{Functional parameter estimate. It can be either a vector or \link{fd} object from \link{fda}.}
 
-\item{x0}{The function under the null hypothesis. zero function is assumed when not given.}
+\item{x0}{Functional parameter under the null hypothesis. Zero function is assumed if it's not given.}
 
-\item{cov}{The covaraicne operator (as matrix) for the random function x. The eigen decomposition of covariance operator can be used instead.}
+\item{cov}{N * Cov(X), in which X is the functional estimator. It can be either matrix or \link{bifd} object from \link{fda}. The eigen decomposition of Cov(X) can be used instead.}
 
-\item{N}{Sample size. It should be '1' if 'cov' is the covariance operator for 'x' itself. If 'x' is the mean of an i.i.d. sample of size 'N' and the 'cov' is the covariance operator of each unit in the sample, then this 'N' can be used here.}
+\item{N}{It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.}
 
-\item{type}{This specifies which regions to be used for the tests. It should be a collection of the followings : "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".}
+\item{type}{This specifies which regions to be used for the tests. It should be a collection of the followings : "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".
+\itemize{
+  \item Enorm  The Hilbert space norm based test, which uses a `ball' in the function space(H).
+  \item Epc fPCA based test, which is a finite-dimensional chi-square ellipse in H
+  \item Ec  The suggested test based on the ellipsoid region in which radius are proportional to the square-root of corresponding eigenvalues.
+  \item Ec1 The second suggestion for ellipsoie region, in which radius are proportional to the square-root of tails sums of eigenvalues. Doesn't require any smoothness assumption.
+  \item Rz The suggested rectangular region based test.
+  \item Rz1 The second suggested rectangular region based test.
+  \item Rzs The small sample version of Rz.
+  \item Rz1s The small sample version of Rz1.
+}}
 
-\item{pc.cut}{It takes a vector of number of fpc to use in each testing. For integer values, fpc up to those values will be used. If it's a value from 0 to 1, this specifies the proportion of variance that should be explained by the fpcs. If it is 0, all the available fpcs will be used as long as the size of eigenvalues are greater than .Machine$double.eps.}
+\item{pc.cut}{It takes a vector of number of fPC to use in each HT. For integer values, fPC up to those values will be used. If it's a value from 0 to 1, this specifies the proportion of (estimated) variance that should be explained by the fPCs. If it is 0, all the available fPCs will be used as long as the size of eigenvalues are greater than .Machine$double.eps.}
 
-\item{prec}{This determines the accuracy of imhof. One may try to modify this if p-value achieved in Ellipsoid form other than "Epc" gives negative value. It should the the form of c(epsabs, epsrel, limit).}
+\item{prec}{This determines the accuracy of \link{imhof}. One may try to modify this if p-value achieved in Ellipsoid form other than Epc gives negative value. It should the the form of c(epsabs, epsrel, limit).}
 
-\item{hat.cov}{This is estimated covariance operator, which will be used when 'cov' is given as a parametric one and small sample version is used. Usually not needed.}
+\item{hat.cov}{An optional estimated covariance operator, which will be used when 'cov' is given as the true covariance and small sample version(s) are used. Usually not needed.}
 
-\item{df}{Degree of freedom to use in small sample versions with suffix 's'}
-}
-\value{
-p-value achieved from it.
+\item{df}{Degree of freedom to use in small sample versions.}
 }
 \description{
-Perform a hypothesis test based on a functional confidence region
+Perform hypothesis test(s) based on functional confidence region(s).
 }
 \examples{
-## Generate Sample
-p <- 100 ; N <- 50
-grid <- make.grid(p)
-mu0 <- mean.f.poly(grid,c(0,1)) ; names(mu0) <- grid
-mu <- mean.f.poly(grid,c(0,1.1)) ; names(mu) <- grid
-cov.m <- make.cov.m(cov.f <- cov.f.st.matern, grid=grid, cov.f.params=c(1/2,1,1/4))
-X <- make.sample(mu,cov.m,N)
-## Find Estimates
-hat.mu <- rowMeans(X)
-hat.cov.m <- crossprod(t(X - hat.mu)) / (N-1)
-## Perform Test
-fregion.test(hat.mu,mu0,hat.cov.m,N,type=c("ALL"),pc.cut=c(3,5,0.99,0.999,0))
+# 1. Vector/matrix version
+
+# Generate a sample
+p = 200 ; N = 80 ; rangeval = c(0,1)
+grid = make.grid(p, rangevals=rangeval)
+mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+e.cov.m = eigen(cov.m)
+x = make.sample(mu,cov.m,N)
+
+# Find the estimate and covariance
+hat.mu = rowMeans(x)
+hat.cov.m = crossprod(t(X - hat.mu)) / (N-1)
+e.hat.cov.m = eigen(hat.cov.m)   # <- This is optional and can be provide into the functions instead of hat.cov.m below.
+
+# Compare different methods for Hypothesis testings.
+(a1 <- fregion.test(hat.mu,mu0,hat.cov.m,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999)))
+(a1.true <- fregion.test(hat.mu,mu0,cov.m,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999,0.99999)))
+
+
+# 2. fd/bifd version
+
+# create basis, convert vector/matrix into fd/bifd objects.
+require(fda)
+nbasis <- round(p*0.9)
+fd.basis <- create.bspline.basis(rangeval,nbasis)
+mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
+mu.fd <- Data2fd(names(mu),mu,fd.basis)
+x.fd <- Data2fd(rownames(x),x,fd.basis)
+cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
+hat.mu.fd <- mean.fd(x.fd)
+hat.cov.fd <- var.fd(x.fd)
+e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
+
+# Compare different methods for Hypothesis testings.
+(a1.fd=fregion.test(hat.mu.fd,mu0.fd,hat.cov.fd,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999)))
+(a1.fd.true=fregion.test(hat.mu.fd,mu0.fd,cov.fd,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999,0.99999)))
 }
 

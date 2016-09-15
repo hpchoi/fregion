@@ -16,9 +16,9 @@ get.crit.supnorm.simple <- function(cov.m,n.sim,prob){ ### Finding Maximum of No
 #' @export
 get.crit.Rz <- function(lambdas,prob){ ## Assigning log(1-alpha) proportional to lambda.
   if (!is.null(dim(lambdas)[2])) {
-    lambdas=eigen(lambdas)$values
-    lambdas=lambdas[lambdas>.Machine$double.eps] # Handle Numerical Error
-  }   # Can Feed either eigenvalues or cov.matrix
+    lambdas <- eigen(lambdas)$values   # May Feed either eigenvalues or cov.matrix
+    lambdas <- lambdas[lambdas>.Machine$double.eps]
+  }
   qnorm2(exp(lambdas / sum(lambdas) * log(prob)))
 }
 
@@ -26,8 +26,8 @@ get.crit.Rz <- function(lambdas,prob){ ## Assigning log(1-alpha) proportional to
 get.crit.Rz1 <- function(lambdas,prob){  ## Minimize Size ##
   if (!is.null(dim(lambdas)[2])) {
     lambdas=eigen(lambdas)$values
-    lambdas=lambdas[lambdas>.Machine$double.eps] # Handle Numerical Error
-  }   # Can Feed either eigenvalues or cov.matrix
+    lambdas=lambdas[lambdas>.Machine$double.eps]
+  }
   lowerb <- sqrt(2*pi) * lambdas[1] * sf.f1(qnorm2(prob))
   upperb <- sqrt(2*pi) * lambdas[1] * sf.f1(qnorm2(prob^(1/length(lambdas))))
   M <- optim(c((lowerb+upperb)/2),fn=sf.diffP,lambdas=lambdas,prob=prob,

@@ -2,23 +2,20 @@
 % Please edit documentation in R/plot.fregion.band.R
 \name{plot.fregion.band}
 \alias{plot.fregion.band}
-\title{Visualize confidence bands}
+\title{Visualize confidence bands constructed from \link{fregion.band}.}
 \usage{
 \method{plot}{fregion.band}(band, col = NULL, lty = NULL, center = TRUE)
 }
 \arguments{
-\item{band}{A 'fregion.band' object, the output from 'region.band()' funciton.}
+\item{band}{A 'fregion.band' object, the output from \link{fregion.band} funciton.}
 
 \item{col}{a vector of colors to be used for the bands.}
 
 \item{lty}{a vector of colors to be used for the bands.}
 
-\item{center}{Whether to include the original estimate.}
+\item{center}{Whether to include the functional estimate or not.}
 }
 \description{
-Visualize confidence bands
-}
-\examples{
-plot(band)
+Visualize confidence bands constructed from \link{fregion.band}.
 }
 

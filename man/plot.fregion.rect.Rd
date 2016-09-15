@@ -2,22 +2,19 @@
 % Please edit documentation in R/plot.fregion.rect.R
 \name{plot.fregion.rect}
 \alias{plot.fregion.rect}
-\title{Visualize rectangular confidence regions}
+\title{Visualize rectangular confidence regions achieved from \link{fregion.rect}.}
 \usage{
 \method{plot}{fregion.rect}(rect, npc = NULL, returntype = NULL,
   main = NULL, xlab = NULL, ylab = NULL, grid.size = 200)
 }
 \arguments{
-\item{rect}{A 'fregion.rect' object, the output from 'fregion.rect()' funciton.}
+\item{rect}{A 'fregion.rect' object, the output from \link{fregion.rect} funciton.}
 
-\item{npc}{Number of PCs to plot}
+\item{npc}{Number of fPCs to plot.}
 
 \item{grid.size}{Since this function makes plots, fd objects are evaluated and gird.size determines how find the grid should be.}
 }
 \description{
-Visualize rectangular confidence regions
-}
-\examples{
-plot(rect)
+Visualize rectangular confidence regions achieved from \link{fregion.rect}.
 }
 

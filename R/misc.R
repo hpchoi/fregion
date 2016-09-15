@@ -28,7 +28,6 @@ make.cov.m <- function(cov.f=cov.f.st.matern, grid=100, cov.f.params=NULL){  ###
   }
   return(cov.m)
 }
-
 #' @export
 make.sample <- function(mean.v,cov.m,N,dist="rnorm",...){
   p <- length(mean.v)
@@ -42,13 +41,11 @@ make.sample <- function(mean.v,cov.m,N,dist="rnorm",...){
   colnames(X) <- paste0("x",c(1:N))
   return(X)
 }
-
 #' @export
 get.req.n.pc <- function(proportion, lambdas){ # Finds how many pcs are reuqired to achieve desired variance proportion(prop. as 1-10^(-x))
   satisfied <- (proportion <= cumsum(lambdas) / sum(lambdas))
   min(c(1:length(lambdas))[satisfied])
 }
-
 #' @export
 get.schisq.q.gamma <- function(weights,prob){  # prob as 1-alpha
   meanvalue <- sum(weights)
@@ -57,7 +54,6 @@ get.schisq.q.gamma <- function(weights,prob){  # prob as 1-alpha
   gammashape <- meanvalue / gammascale # 'a'
   qgamma(p=prob,shape=gammashape,scale=gammascale,lower.tail=TRUE)
 }
-
 #' @export
 eigen.fd <- function(cov.fd){
   BtB <- inprod(cov.fd$sbasis,cov.fd$tbasis) ## sbisis and tbasis should be the same.
@@ -71,7 +67,6 @@ eigen.fd <- function(cov.fd){
   class(rtnobj) <- "eigen.fd"
   return(rtnobj)
 }
-
 #' @export
 eigen.fd2 <- function(cov.fd){
   W2inv <- inprod(cov.fd$sbasis,cov.fd$tbasis) ## sbisis and tbasis should be the same.
@@ -89,12 +84,10 @@ eigen.fd2 <- function(cov.fd){
   class(rtnobj) <- "eigen.fd"
   return(rtnobj)
 }
-
 #' @export
 cov.m.to.cov.fd <- function(cov.m, eval.points, basisobj){
-  e.cov.m <- eigen(cov.m)
-  basis.evaluated <- eval.basis(eval.points, basisobj)
-  M <- t(as.matrix(basis.evaluated)) %*% e.cov.m$vectors
-  coefs <- M %*% diag(e.cov.m$values) %*% t(M)
-  bifd(coefs,basisobj,basisobj)
+  B <- eval.basis(eval.points, basisobj)
+  M <- chol2inv(chol(t(B)%*%B))
+  C <- M %*% t(B) %*% cov.m %*% B %*% M
+  bifd(C,basisobj,basisobj)
 }
