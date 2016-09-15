@@ -13,3 +13,4 @@ This package contains examplary codes for inferential tools suggested in http://
 `require(fregion)`
 
 `?fregion`
+
