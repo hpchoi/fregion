@@ -42,7 +42,7 @@ x = make.sample(mu,cov.m,N)
 
 # Find the estimate and covariance
 hat.mu = rowMeans(x)
-hat.cov.m = crossprod(t(X - hat.mu)) / (N-1)
+hat.cov.m = crossprod(t(x - hat.mu)) / (N-1)
 e.hat.cov.m = eigen(hat.cov.m)   # <- This is optional and can be provide into the functions instead of hat.cov.m below.
 
 # Make rectangular region and visulize
