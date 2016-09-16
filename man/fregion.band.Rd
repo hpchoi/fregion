@@ -15,6 +15,15 @@ fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
 
 \item{N}{It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.}
 
+\item{type}{The band(s) to be constructed.
+\itemize{
+  \item BEc : The suggested modified Scheffe style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
+  \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1. (Wider than BEc although it does not require smoothness assumption. For comparision purpose only, not recommend for use)
+  \item Bs : Parametric bootstrap simultaneous confidence band, similar to the one appeard in Degras(2011) (for comparision purpose)
+  \item naive-t : A collection of point-wise t-intervals. (for comparision purpose)
+  \item BEPC.x : Scheffe band from 'x' dimensional chi-square ellipse. (for comparision purpose)
+}}
+
 \item{conf.level}{A vector of confidence levels for the bands to achieve.}
 
 \item{grid.size}{This determines on how fine grid the bands will be constructed before converted as an `fd' object. This parameter is used only when 'x' is fd object and 'cov' is bifd object.}
@@ -24,15 +33,6 @@ fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
 \item{prec}{(Currently Not Used) This determines the accuracy of imhof. It's used only when inv.method is inv.imhof.}
 
 \item{sim.size}{This determines bootstrap sample size for Bs}
-
-\item{The}{band(s) to be constructed.
-\itemize{
-  \item BEc : The suggested modified Scheffe style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
-  \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose only, not recommend for use in practice)
-  \item Bs : Parametric bootstrap simultaneous confidence band, similar to the one appeard in Degras(2011) (for comparision purpose)
-  \item naive-t : A collection of point-wise t-intervals. (for comparision purpose)
-  \item BEPC.x : Scheffe band from 'x' dimensional chi-square ellipse. (for comparision purpose)
-}}
 }
 \value{
 fregion.band Either a collection of vector valued bands or `fd' object whose objectname is changed to fregion.band.
@@ -49,7 +49,6 @@ grid = make.grid(p, rangevals=rangeval)
 mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
 mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
 cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
-e.cov.m = eigen(cov.m)
 x = make.sample(mu,cov.m,N)
 
 # Find the estimate and covariance
@@ -71,7 +70,6 @@ fd.basis <- create.bspline.basis(rangeval,nbasis)
 mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
 mu.fd <- Data2fd(names(mu),mu,fd.basis)
 x.fd <- Data2fd(rownames(x),x,fd.basis)
-cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
 hat.mu.fd <- mean.fd(x.fd)
 hat.cov.fd <- var.fd(x.fd)
 e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.

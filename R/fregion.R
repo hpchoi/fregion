@@ -19,7 +19,6 @@
 #' mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
 #' mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
 #' cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
-#' e.cov.m = eigen(cov.m)
 #' x = make.sample(mu,cov.m,N)
 #'
 #' # Find the estimate and covariance
@@ -29,7 +28,6 @@
 #'
 #' # Compare different methods for Hypothesis testings.
 #' (a1 <- fregion.test(hat.mu,mu0,hat.cov.m,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999)))
-#' (a1.true <- fregion.test(hat.mu,mu0,cov.m,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999,0.99999)))
 #'
 #' # Make and visualize/compare confidence bands
 #' b <- fregion.band(hat.mu,hat.cov.m,N=N,type=c("Bs","BEc","BEPC.10","naive.t"),conf.level=c(0.95))
@@ -49,14 +47,12 @@
 #' mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
 #' mu.fd <- Data2fd(names(mu),mu,fd.basis)
 #' x.fd <- Data2fd(rownames(x),x,fd.basis)
-#' cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
 #' hat.mu.fd <- mean.fd(x.fd)
 #' hat.cov.fd <- var.fd(x.fd)
 #' e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
 #'
 #' # Compare different methods for Hypothesis testings.
-#' (a1.fd=fregion.test(hat.mu.fd,mu0.fd,hat.cov.fd,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999)))
-#' (a1.fd.true=fregion.test(hat.mu.fd,mu0.fd,cov.fd,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999,0.99999)))
+#' (a1.fd <- fregion.test(hat.mu.fd, mu0.fd, hat.cov.fd, N, type=c("ALL"), pc.cut=c(1,3,4,5,0.99,0.999)))
 #'
 #' # Make and visualize/compare confidence bands
 #' b.fd <- fregion.band(hat.mu.fd,hat.cov.fd,N=N,type=c("Bs","BEc","BEPC.10","naive.t"),conf.level=c(0.95))

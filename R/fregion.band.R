@@ -3,10 +3,10 @@
 #' @param x Functional parameter estimate. It can be either a vector or \link{fd} object from \link{fda}.
 #' @param cov N * Cov(X), in which X is the functional estimator. It can be either matrix or \link{bifd} object from \link{fda}. The eigen decomposition of Cov(X) can be used instead.
 #' @param N It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.
-#' @param The band(s) to be constructed.
+#' @param type The band(s) to be constructed.
 #' \itemize{
 #'   \item BEc : The suggested modified Scheffe style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
-#'   \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose only, not recommend for use in practice)
+#'   \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1. (Wider than BEc although it does not require smoothness assumption. For comparision purpose only, not recommend for use)
 #'   \item Bs : Parametric bootstrap simultaneous confidence band, similar to the one appeard in Degras(2011) (for comparision purpose)
 #'   \item naive-t : A collection of point-wise t-intervals. (for comparision purpose)
 #'   \item BEPC.x : Scheffe band from 'x' dimensional chi-square ellipse. (for comparision purpose)
@@ -26,7 +26,6 @@
 #' mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
 #' mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
 #' cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
-#' e.cov.m = eigen(cov.m)
 #' x = make.sample(mu,cov.m,N)
 #'
 #' # Find the estimate and covariance
@@ -48,7 +47,6 @@
 #' mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
 #' mu.fd <- Data2fd(names(mu),mu,fd.basis)
 #' x.fd <- Data2fd(rownames(x),x,fd.basis)
-#' cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
 #' hat.mu.fd <- mean.fd(x.fd)
 #' hat.cov.fd <- var.fd(x.fd)
 #' e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
@@ -84,7 +82,7 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
   colnames(result) <- c("x")
   ## Take eigen decomposition if BEc or BEc1 is used.
   if (sum(c("BEc","BEc1") %in% type) > 0) eigen.cov.m <- eigen(cov.m)
-  eigen.cov.m$values[eigen.cov.m$values<0] <- 0 # trim negative eigenvalues.
+  eigen.cov.m$values[ eigen.cov.m$values < 0 ] <- 0 # trim negative eigenvalues.
 
   for (i in c(1:length(conf.level))){
     level <- conf.level[i]

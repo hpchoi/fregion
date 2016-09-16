@@ -17,7 +17,6 @@
 #' mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
 #' mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
 #' cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
-#' e.cov.m = eigen(cov.m)
 #' x = make.sample(mu,cov.m,N)
 #'
 #' # Find the estimate and covariance
@@ -39,7 +38,6 @@
 #' mu0.fd <- Data2fd(names(mu0),mu0,fd.basis)
 #' mu.fd <- Data2fd(names(mu),mu,fd.basis)
 #' x.fd <- Data2fd(rownames(x),x,fd.basis)
-#' cov.fd <- cov.m.to.cov.fd(cov.m, grid, fd.basis)
 #' hat.mu.fd <- mean.fd(x.fd)
 #' hat.cov.fd <- var.fd(x.fd)
 #' e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
