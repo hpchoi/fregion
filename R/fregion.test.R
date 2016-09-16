@@ -1,19 +1,19 @@
-#' Perform hypothesis test(s) based on functional confidence region(s).
+#' Performs hypothesis test(s) based on functional confidence region(s).
 #'
 #' @param x Functional parameter estimate. It can be either a vector or \link{fd} object from \link{fda}.
 #' @param x0 Functional parameter under the null hypothesis. Zero function is assumed if it's not given.
 #' @param cov N * Cov(X), in which X is the functional estimator. It can be either matrix or \link{bifd} object from \link{fda}. The eigen decomposition of Cov(X) can be used instead.
 #' @param N It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.
-#' @param type This specifies which regions to be used for the tests. It should be a collection of the followings : "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".
+#' @param type This specifies which regions to be used for the tests. It should be a collection of the following: "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".
 #' \itemize{
-#'   \item Enorm  The Hilbert space norm based test, which uses a `ball' in the function space(H).
-#'   \item Epc fPCA based test, which is a finite-dimensional chi-square ellipse in H
-#'   \item Ec  The suggested test based on the ellipsoid region in which radius are proportional to the square-root of corresponding eigenvalues.
-#'   \item Ec1 The second suggestion for ellipsoie region, in which radius are proportional to the square-root of tails sums of eigenvalues. Doesn't require any smoothness assumption.
-#'   \item Rz The suggested rectangular region based test.
-#'   \item Rz1 The second suggested rectangular region based test.
-#'   \item Rzs The small sample version of Rz.
-#'   \item Rz1s The small sample version of Rz1.
+#'   \item Enorm : The Hilbert space norm based test, which uses a `ball' in the function space(H).
+#'   \item Epc : fPCA based test, which is a finite-dimensional chi-square ellipse in H
+#'   \item Ec : The suggested test based on the ellipsoid region in which radius are proportional to the square-root of corresponding eigenvalues.
+#'   \item Ec1 : The second suggestion for ellipsoie region, in which radius are proportional to the square-root of tails sums of eigenvalues. Doesn't require any smoothness assumption.
+#'   \item Rz : The suggested rectangular region based test.
+#'   \item Rz1 : The second suggested rectangular region based test.
+#'   \item Rzs : The small sample version of Rz.
+#'   \item Rz1s : The small sample version of Rz1.
 #' }
 #' @param pc.cut It takes a vector of number of fPC to use in each HT. For integer values, fPC up to those values will be used. If it's a value from 0 to 1, this specifies the proportion of (estimated) variance that should be explained by the fPCs. If it is 0, all the available fPCs will be used as long as the size of eigenvalues are greater than .Machine$double.eps.
 #' @param prec This determines the accuracy of \link{imhof}. One may try to modify this if p-value achieved in Ellipsoid form other than Epc gives negative value. It should the the form of c(epsabs, epsrel, limit).
@@ -25,9 +25,9 @@
 #' # Generate a sample
 #' p = 200 ; N = 80 ; rangeval = c(0,1)
 #' grid = make.grid(p, rangevals=rangeval)
-#' mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-#' mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-#' cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+#' mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+#' mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+#' cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 #' e.cov.m = eigen(cov.m)
 #' x = make.sample(mu,cov.m,N)
 #'
@@ -107,14 +107,14 @@ fregion.test <- function(x, x0=NULL, cov, N=1, type=c("Ec"), pc.cut=c(0.99), pre
 
     # 6. Run tests ; If 'ALL' is included then run all the tests
     if ( sum(c("all", "All", "ALL") %in% type) > 0 ) type <- c("Enorm","Epc","Ec","Ec1","Rz","Rz1","Rzs","Rz1s")
-    if ("Enorm" %in% type)  pval.Enorm <- fregion::get.pval.Enorm(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut,prec=prec)
-    if ("Epc" %in% type)    pval.Epc   <- fregion::get.pval.Epc(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut)
-    if ("Ec" %in% type)     pval.Ec    <- fregion::get.pval.Ec(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut,prec=prec)
-    if ("Ec1" %in% type)    pval.Ec1   <- fregion::get.pval.Ec1(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut,prec=prec)
-    if ("Rz" %in% type)     pval.Rz    <- fregion::get.pval.Rz(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut)
-    if ("Rz1" %in% type)    pval.Rz1   <- fregion::get.pval.Rz1(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut)
-    if ("Rzs" %in% type)    pval.Rzs   <- fregion::get.pval.Rzs(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut,hat.cov=hat.cov,df=df)
-    if ("Rz1s" %in% type)   pval.Rz1s  <- fregion::get.pval.Rz1s(x=x,sample.size=N,eigen=e.cov,fpc.cut=cut,hat.cov=hat.cov,df=df)
+    if ("Enorm" %in% type)  pval.Enorm <- fregion::get.pval.Enorm(x=x,N=N,eigen=e.cov,fpc.cut=cut,prec=prec)
+    if ("Epc" %in% type)    pval.Epc   <- fregion::get.pval.Epc(x=x,N=N,eigen=e.cov,fpc.cut=cut)
+    if ("Ec" %in% type)     pval.Ec    <- fregion::get.pval.Ec(x=x,N=N,eigen=e.cov,fpc.cut=cut,prec=prec)
+    if ("Ec1" %in% type)    pval.Ec1   <- fregion::get.pval.Ec1(x=x,N=N,eigen=e.cov,fpc.cut=cut,prec=prec)
+    if ("Rz" %in% type)     pval.Rz    <- fregion::get.pval.Rz(x=x,N=N,eigen=e.cov,fpc.cut=cut)
+    if ("Rz1" %in% type)    pval.Rz1   <- fregion::get.pval.Rz1(x=x,N=N,eigen=e.cov,fpc.cut=cut)
+    if ("Rzs" %in% type)    pval.Rzs   <- fregion::get.pval.Rzs(x=x,N=N,eigen=e.cov,fpc.cut=cut,hat.cov=hat.cov,df=df)
+    if ("Rz1s" %in% type)   pval.Rz1s  <- fregion::get.pval.Rz1s(x=x,N=N,eigen=e.cov,fpc.cut=cut,hat.cov=hat.cov,df=df)
 
     names.pval <- ls(pattern=glob2rx("pval.*"))
     pvalues <- sapply(names.pval,get,inherits=FALSE,envir=1)

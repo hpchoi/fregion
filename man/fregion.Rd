@@ -22,9 +22,9 @@ The example below is given in a mean function estimation context but works for o
 # Generate a sample
 p = 200 ; N = 80 ; rangeval = c(0,1)
 grid = make.grid(p, rangevals=rangeval)
-mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 e.cov.m = eigen(cov.m)
 x = make.sample(mu,cov.m,N)
 

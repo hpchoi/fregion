@@ -2,7 +2,7 @@
 % Please edit documentation in R/fregion.band.R
 \name{fregion.band}
 \alias{fregion.band}
-\title{Make confidence bands}
+\title{Makes confidence bands}
 \usage{
 fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
   grid.size = 200, inv.method = "gamma.approx", prec = NULL,
@@ -15,15 +15,6 @@ fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
 
 \item{N}{It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.}
 
-\item{type}{This specifies which confidence bands are to be constructed.
-\itemize{
-  \item BEc The suggested modified Scheff\'e style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
-  \item BEc1 Another modified Scheff\'e style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose)
-  \item Bs Parametric bootstrap simultaneous confidence band, similar to appeard in Degras(2011) (for comparision purpose)
-  \item naive-t A collection of point-wise t-intervals. (for comparision purpose)
-  \item BEPC.x Scheff\'e band from 'x' dimensional chi-square ellipse. (for comparision purpose)
-}}
-
 \item{conf.level}{A vector of confidence levels for the bands to achieve.}
 
 \item{grid.size}{This determines on how fine grid the bands will be constructed before converted as an `fd' object. This parameter is used only when 'x' is fd object and 'cov' is bifd object.}
@@ -33,12 +24,21 @@ fregion.band(x, cov, N = 1, type = c("Bs", "BEc"), conf.level = c(0.95),
 \item{prec}{(Currently Not Used) This determines the accuracy of imhof. It's used only when inv.method is inv.imhof.}
 
 \item{sim.size}{This determines bootstrap sample size for Bs}
+
+\item{The}{band(s) to be constructed.
+\itemize{
+  \item BEc : The suggested modified Scheffe style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
+  \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose only, not recommend for use in practice)
+  \item Bs : Parametric bootstrap simultaneous confidence band, similar to the one appeard in Degras(2011) (for comparision purpose)
+  \item naive-t : A collection of point-wise t-intervals. (for comparision purpose)
+  \item BEPC.x : Scheffe band from 'x' dimensional chi-square ellipse. (for comparision purpose)
+}}
 }
 \value{
 fregion.band Either a collection of vector valued bands or `fd' object whose objectname is changed to fregion.band.
 }
 \description{
-Make confidence bands
+Makes confidence bands
 }
 \examples{
 # 1. Vector/matrix version
@@ -46,9 +46,9 @@ Make confidence bands
 # Generate a sample
 p = 200 ; N = 80 ; rangeval = c(0,1)
 grid = make.grid(p, rangevals=rangeval)
-mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 e.cov.m = eigen(cov.m)
 x = make.sample(mu,cov.m,N)
 

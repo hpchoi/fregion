@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.fregion.band.R
 \name{plot.fregion.band}
 \alias{plot.fregion.band}
-\title{Visualize confidence bands constructed from \link{fregion.band}.}
+\title{Visualizes confidence bands constructed from \link{fregion.band}.}
 \usage{
 \method{plot}{fregion.band}(band, col = NULL, lty = NULL, center = TRUE)
 }
@@ -16,6 +16,6 @@
 \item{center}{Whether to include the functional estimate or not.}
 }
 \description{
-Visualize confidence bands constructed from \link{fregion.band}.
+Visualizes confidence bands constructed from \link{fregion.band}.
 }
 

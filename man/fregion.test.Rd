@@ -2,7 +2,7 @@
 % Please edit documentation in R/fregion.test.R
 \name{fregion.test}
 \alias{fregion.test}
-\title{Perform hypothesis test(s) based on functional confidence region(s).}
+\title{Performs hypothesis test(s) based on functional confidence region(s).}
 \usage{
 fregion.test(x, x0 = NULL, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
   prec = NULL, hat.cov = NULL, df = NULL)
@@ -16,16 +16,16 @@ fregion.test(x, x0 = NULL, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
 
 \item{N}{It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.}
 
-\item{type}{This specifies which regions to be used for the tests. It should be a collection of the followings : "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".
+\item{type}{This specifies which regions to be used for the tests. It should be a collection of the following: "Enorm", "Epc", "Ec", "Ec1", "Rz", "Rz1", "Rzs", or "Rz1s".
 \itemize{
-  \item Enorm  The Hilbert space norm based test, which uses a `ball' in the function space(H).
-  \item Epc fPCA based test, which is a finite-dimensional chi-square ellipse in H
-  \item Ec  The suggested test based on the ellipsoid region in which radius are proportional to the square-root of corresponding eigenvalues.
-  \item Ec1 The second suggestion for ellipsoie region, in which radius are proportional to the square-root of tails sums of eigenvalues. Doesn't require any smoothness assumption.
-  \item Rz The suggested rectangular region based test.
-  \item Rz1 The second suggested rectangular region based test.
-  \item Rzs The small sample version of Rz.
-  \item Rz1s The small sample version of Rz1.
+  \item Enorm : The Hilbert space norm based test, which uses a `ball' in the function space(H).
+  \item Epc : fPCA based test, which is a finite-dimensional chi-square ellipse in H
+  \item Ec : The suggested test based on the ellipsoid region in which radius are proportional to the square-root of corresponding eigenvalues.
+  \item Ec1 : The second suggestion for ellipsoie region, in which radius are proportional to the square-root of tails sums of eigenvalues. Doesn't require any smoothness assumption.
+  \item Rz : The suggested rectangular region based test.
+  \item Rz1 : The second suggested rectangular region based test.
+  \item Rzs : The small sample version of Rz.
+  \item Rz1s : The small sample version of Rz1.
 }}
 
 \item{pc.cut}{It takes a vector of number of fPC to use in each HT. For integer values, fPC up to those values will be used. If it's a value from 0 to 1, this specifies the proportion of (estimated) variance that should be explained by the fPCs. If it is 0, all the available fPCs will be used as long as the size of eigenvalues are greater than .Machine$double.eps.}
@@ -37,7 +37,7 @@ fregion.test(x, x0 = NULL, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
 \item{df}{Degree of freedom to use in small sample versions.}
 }
 \description{
-Perform hypothesis test(s) based on functional confidence region(s).
+Performs hypothesis test(s) based on functional confidence region(s).
 }
 \examples{
 # 1. Vector/matrix version
@@ -45,9 +45,9 @@ Perform hypothesis test(s) based on functional confidence region(s).
 # Generate a sample
 p = 200 ; N = 80 ; rangeval = c(0,1)
 grid = make.grid(p, rangevals=rangeval)
-mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 e.cov.m = eigen(cov.m)
 x = make.sample(mu,cov.m,N)
 

@@ -1,4 +1,4 @@
-#' Visualize confidence bands constructed from \link{fregion.band}.
+#' Visualizes confidence bands constructed from \link{fregion.band}.
 #'
 #' @param band A 'fregion.band' object, the output from \link{fregion.band} funciton.
 #' @param col a vector of colors to be used for the bands.

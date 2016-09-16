@@ -2,7 +2,7 @@
 % Please edit documentation in R/fregion.rect.R
 \name{fregion.rect}
 \alias{fregion.rect}
-\title{Make Rectangular Confidence Regoion}
+\title{Builds a Rectangular Confidence Region}
 \usage{
 fregion.rect(x, cov, N = 1, type = "Rz", conf.level = 0.95,
   pc.cut = 0.999, df = NULL)
@@ -26,7 +26,7 @@ fregion.rect(x, cov, N = 1, type = "Rz", conf.level = 0.95,
 fregion.rect Use \link{plot.fregion.rect} to visualize.
 }
 \description{
-Make Rectangular Confidence Regoion
+Builds a Rectangular Confidence Region
 }
 \examples{
 # 1. Vector/matrix version
@@ -34,9 +34,9 @@ Make Rectangular Confidence Regoion
 # Generate a sample
 p = 200 ; N = 80 ; rangeval = c(0,1)
 grid = make.grid(p, rangevals=rangeval)
-mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 e.cov.m = eigen(cov.m)
 x = make.sample(mu,cov.m,N)
 

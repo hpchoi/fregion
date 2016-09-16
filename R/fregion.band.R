@@ -1,15 +1,15 @@
-#' Make confidence bands
+#' Makes confidence bands
 #'
 #' @param x Functional parameter estimate. It can be either a vector or \link{fd} object from \link{fda}.
 #' @param cov N * Cov(X), in which X is the functional estimator. It can be either matrix or \link{bifd} object from \link{fda}. The eigen decomposition of Cov(X) can be used instead.
 #' @param N It should be '1' if 'cov' is the covariance operator for X itself, which is the default value.
-#' @param type This specifies which confidence bands are to be constructed.
+#' @param The band(s) to be constructed.
 #' \itemize{
-#'   \item BEc The suggested modified Scheff\'e style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
-#'   \item BEc1 Another modified Scheff\'e style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose)
-#'   \item Bs Parametric bootstrap simultaneous confidence band, similar to appeard in Degras(2011) (for comparision purpose)
-#'   \item naive-t A collection of point-wise t-intervals. (for comparision purpose)
-#'   \item BEPC.x Scheff\'e band from 'x' dimensional chi-square ellipse. (for comparision purpose)
+#'   \item BEc : The suggested modified Scheffe style band from hyper-ellipsoie Ec, which uses up to the very last dimension.
+#'   \item BEc1 : Another modified Scheffe style band from hyper-ellipsoie Ec1, which also uses up to the very last dimension. Wider than BEc but does not require smoothness assumption. (For comparision purpose only, not recommend for use in practice)
+#'   \item Bs : Parametric bootstrap simultaneous confidence band, similar to the one appeard in Degras(2011) (for comparision purpose)
+#'   \item naive-t : A collection of point-wise t-intervals. (for comparision purpose)
+#'   \item BEPC.x : Scheffe band from 'x' dimensional chi-square ellipse. (for comparision purpose)
 #' }
 #' @param conf.level A vector of confidence levels for the bands to achieve.
 #' @param grid.size This determines on how fine grid the bands will be constructed before converted as an `fd' object. This parameter is used only when 'x' is fd object and 'cov' is bifd object.
@@ -23,9 +23,9 @@
 #' # Generate a sample
 #' p = 200 ; N = 80 ; rangeval = c(0,1)
 #' grid = make.grid(p, rangevals=rangeval)
-#' mu0 = mean.f.poly(grid,c(0,1)) ; names(mu0) = grid
-#' mu = mean.f.poly(grid,c(0,1.1)) ; names(mu) = grid
-#' cov.m = make.cov.m(cov.f = cov.f.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
+#' mu0 = meanf.poly(grid,c(0,1)) ; names(mu0) = grid
+#' mu = meanf.poly(grid,c(0,1.1)) ; names(mu) = grid
+#' cov.m = make.cov.m(cov.f = covf.st.matern, grid=grid, cov.f.params=c(2/2,1,1))
 #' e.cov.m = eigen(cov.m)
 #' x = make.sample(mu,cov.m,N)
 #'

@@ -1,4 +1,4 @@
-#' Visualize rectangular confidence regions achieved from \link{fregion.rect}.
+#' Visualizes rectangular confidence regions achieved from \link{fregion.rect}.
 #'
 #' @param rect A 'fregion.rect' object, the output from \link{fregion.rect} funciton.
 #' @param npc Number of fPCs to plot.
