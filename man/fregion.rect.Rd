@@ -45,7 +45,7 @@ hat.cov.m = crossprod(t(x - hat.mu)) / (N-1)
 e.hat.cov.m = eigen(hat.cov.m)   # <- This is optional and can be provide into the functions instead of hat.cov.m below.
 
 # Make rectangular region and visulize
-c <- fregion.rect(hat.mu,hat.cov.m,N=N)
+c <- fregion.rect(hat.mu-mu0,hat.cov.m,N=N)
 plot(c)
 
 
@@ -63,7 +63,7 @@ hat.cov.fd <- var.fd(x.fd)
 e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
 
 # Make rectangular region and visulize
-c.fd <- fregion.rect(hat.mu.fd,hat.cov.fd,N=N)
+c.fd <- fregion.rect(hat.mu.fd-mu0.fd,hat.cov.fd,N=N)
 plot(c.fd)
 }
 

@@ -34,7 +34,7 @@
 #' plot(b)
 #'
 #' # Make rectangular region and visulize
-#' c <- fregion.rect(hat.mu,hat.cov.m,N=N)
+#' c <- fregion.rect(hat.mu-mu0,hat.cov.m,N=N)
 #' plot(c)
 #'
 #'
@@ -59,7 +59,7 @@
 #' plot(b.fd)
 #'
 #' # Make rectangular region and visulize
-#' c.fd <- fregion.rect(hat.mu.fd,hat.cov.fd,N=N)
+#' c.fd <- fregion.rect(hat.mu.fd-mu0.fd,hat.cov.fd,N=N)
 #' plot(c.fd)
 #' @docType package
 #' @name fregion

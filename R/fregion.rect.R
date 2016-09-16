@@ -25,7 +25,7 @@
 #' e.hat.cov.m = eigen(hat.cov.m)   # <- This is optional and can be provide into the functions instead of hat.cov.m below.
 #'
 #' # Make rectangular region and visulize
-#' c <- fregion.rect(hat.mu,hat.cov.m,N=N)
+#' c <- fregion.rect(hat.mu-mu0,hat.cov.m,N=N)
 #' plot(c)
 #'
 #'
@@ -43,7 +43,7 @@
 #' e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide into the functions instead of hat.cov.fd below.
 #'
 #' # Make rectangular region and visulize
-#' c.fd <- fregion.rect(hat.mu.fd,hat.cov.fd,N=N)
+#' c.fd <- fregion.rect(hat.mu.fd-mu0.fd,hat.cov.fd,N=N)
 #' plot(c.fd)
 
 #' @export
@@ -59,8 +59,9 @@ fregion.rect <- function(x, cov, N=1, type="Rz", conf.level=0.95, pc.cut=0.999, 
   if (inherits(cov,"bifd")) e.cov <- eigen.fd(cov)
   if (inherits(cov,"matrix")) e.cov <- eigen(cov)
 
-  # Trim cov to have all non-negative eigenvalues (precautionary)
+  # Trim cov to have all non-negative eigenvalues (precautionary) and scale it according to N
   e.cov$values[e.cov$values<0] <- 0
+  e.cov$values <- e.cov$values / N
 
   if (is.null(df)) df <- N - 1
   cut=pc.cut
