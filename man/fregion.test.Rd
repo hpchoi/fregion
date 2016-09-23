@@ -4,7 +4,7 @@
 \alias{fregion.test}
 \title{Performs hypothesis test(s) based on functional confidence region(s).}
 \usage{
-fregion.test(x, x0 = NULL, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
+fregion.test(x, x0 = 0, cov, N = 1, type = c("Ec"), pc.cut = c(0.99),
   prec = NULL, hat.cov = NULL, df = NULL)
 }
 \arguments{
