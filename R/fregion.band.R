@@ -81,8 +81,10 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
   result <- as.matrix(x.v,ncol=1) ;
   colnames(result) <- c("x")
   ## Take eigen decomposition if BEc or BEc1 is used.
-  if (sum(c("BEc","BEc1") %in% type) > 0) eigen.cov.m <- eigen(cov.m)
-  eigen.cov.m$values[ eigen.cov.m$values < 0 ] <- 0 # trim negative eigenvalues.
+  if (sum(c("BEc","BEc1") %in% type) > 0) {
+    eigen.cov.m <- eigen(cov.m)
+    eigen.cov.m$values[ eigen.cov.m$values < 0 ] <- 0
+  }# trim negative eigenvalues.
 
   for (i in c(1:length(conf.level))){
     level <- conf.level[i]
