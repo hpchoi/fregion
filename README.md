@@ -4,17 +4,19 @@ This package contains example codes for inferential tools suggested in http://ar
 
 ## Installation
 
-After installing `devtools' first, 
+After installing `devtools' first, type in the following in R
 
-`require(devtools)`
-
-`install_github("hpchoi/fregion")`
+```r
+require(devtools)
+install_github("hpchoi/fregion")
+```
 
 ## Help
 
 Help is available thorough
 
-`require(fregion)`
-
-`?fregion`
-
+```r
+require(fregion)
+?fregion
+```
+Please note that documentation is still minimal.
