@@ -54,19 +54,7 @@ get.schisq.q.gamma <- function(weights,prob){  # prob as 1-alpha
   gammashape <- meanvalue / gammascale # 'a'
   qgamma(p=prob,shape=gammashape,scale=gammascale,lower.tail=TRUE)
 }
-#' @export
-eigen.fd <- function(cov.fd){
-  BtB <- inprod(cov.fd$sbasis,cov.fd$tbasis) ## sbisis and tbasis should be the same.
-  B <- chol(BtB)
-  coefs <- cov.fd$coefs
-  coefsU <- B%*%coefs%*%t(B)
-  e.coefsU <- eigen(coefsU)
-  vcoefs <-  solve(B) %*% e.coefsU$vectors
-  harmonics <- fd(vcoefs,cov.fd$sbasis)
-  rtnobj <- list(values=e.coefsU$values, harmonics=harmonics)
-  class(rtnobj) <- "eigen.fd"
-  return(rtnobj)
-}
+
 #' @export
 eigen.fd2 <- function(cov.fd){
   W2inv <- inprod(cov.fd$sbasis,cov.fd$tbasis) ## sbisis and tbasis should be the same.
@@ -83,11 +71,4 @@ eigen.fd2 <- function(cov.fd){
   rtnobj <- list(values=e.A$values,harmonics=harmonics)
   class(rtnobj) <- "eigen.fd"
   return(rtnobj)
-}
-#' @export
-cov.m.to.cov.fd <- function(cov.m, eval.points, basisobj){
-  B <- eval.basis(eval.points, basisobj)
-  M <- chol2inv(chol(t(B)%*%B))
-  C <- M %*% t(B) %*% cov.m %*% B %*% M
-  bifd(C,basisobj,basisobj)
 }

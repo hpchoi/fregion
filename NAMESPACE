@@ -2,7 +2,7 @@
 
 S3method(plot,fregion.band)
 S3method(plot,fregion.rect)
-export(cov.m.to.cov.fd)
+export(Data2bifd)
 export(covf.st.matern)
 export(covf.st.matern.warp.power)
 export(eigen.fd)

@@ -1,10 +1,10 @@
 Package: fregion
 Type: Package
 Title: Confidence Regions and Bands for Functional Data
-Version: 0.082
-Date: 2016-09-28
+Version: 0.09
+Date: 2016-10-01
 Authors@R: person("Hyunphil", "Choi", email = "phil0808@gmail.com", role = c("aut", "cre"))
-Description: A sample code for inferential tools for functional data analysis. Based on hyper-ellipsoid and hyper-retangular confidence regions in function space, performs hypothesis tests and visulizes those regions as bands (for ellipsoid regions), or marginal intervals (for rectangular regions).
+Description: This package provides inferential tools for functional parameters when Gaussian estimators are in place.
 License: GPL-3
 Imports:
      CompQuadForm,
