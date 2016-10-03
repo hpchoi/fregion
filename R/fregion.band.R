@@ -61,18 +61,27 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
                         inv.method="gamma.approx", prec=NULL, sim.size=10000){
 
   ### 1. Check the data type ###
-  if (inherits(x,"fd") & inherits(cov,"bifd")) datatype="fd" else if
-     (inherits(x,"numeric") & inherits(cov,"matrix")) datatype="vector" else stop("The format of data is unknown")
+  if (inherits(x,"fd") & (inherits(cov,"bifd") | inherits(cov,"pca.fd") | inherits(cov,"eigen.fd"))) datatype="fd" else if
+     (inherits(x,"numeric") & (inherits(cov,"matrix") | inherits(cov,"list"))) datatype="vector" else stop ("The format of data is unknown")
 
   ### 2. Evaluate x and cov ###
   # evaluate x and cov if datatype is "fd".
   # Since all functions for generating bands evaluate fd object inside, we do this here and just use vector/matrix version
   if (datatype=="fd") {
+    if (!inherits(cov,"bifd")) {
+      J <- min(sum(cov$values > 0),dim(cov$harmonics$coefs)[2])
+      coef <- cov$harmonics$coefs[,c(1:J)] %*% diag(cov$values[c(1:J)]) %*% t(cov$harmonics$coefs[,c(1:J)])
+      cov <- bifd(coef,cov$harmonics$basis,cov$harmonics$basis)
+    }
     evalgrid <- make.grid(p=grid.size, rangevals=x$basis$rangeval)
     cov.m <- eval.bifd(evalgrid, evalgrid, cov)
     x.v <- eval.fd(evalgrid, x)
   } else {
-    cov.m <- cov ; x.v <- x
+    if (inherits(cov,"list")) {
+      J <- sum(cov$values > 0)
+      cov.m <- cov$vectors[,c(1:J)] %*% diag(cov$values[c(1:J)]) %*% t(cov$vectors[,c(1:J)])
+    } else cov.m <- cov;
+    x.v <- x
   }
   p <- dim(cov.m)[1]
 
