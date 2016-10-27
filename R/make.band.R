@@ -14,6 +14,7 @@ make.band.BEc <- function(eigen, conf.level, fd.eval.grid.size=200){
     return(Data2fd(evalgrid,band.eval,basisobj=eigen$harmonics$basis)) # return as fd object
   } else return(band.eval)                                               # return as vector
 }
+
 #' @export
 make.band.BEPC <- function(eigen, conf.level, J, fd.eval.grid.size=200){ ## Finite dim. version of FPC based ellipse -> band.
   alpha.level <- 1-conf.level
@@ -29,6 +30,7 @@ make.band.BEPC <- function(eigen, conf.level, J, fd.eval.grid.size=200){ ## Fini
     return(Data2fd(evalgrid,band.eval,basisobj=eigen$harmonics$basis)) # return as fd object
   } else return(band.eval)                                               # return as vector
 }
+
 #' @export
 make.band.Bs <- function(cov, conf.level, sim.size=10000, fd.eval.grid.size=200){
   if (inherits(cov,"bifd")) {

@@ -58,7 +58,6 @@
 #' @export
 
 fregion.test <- function(x, x0=0, cov, N=1, type=c("Ec"), pc.cut=c(0.99), prec=NULL, hat.cov=NULL, df=NULL){
-
   ### 1. Check the data type ###
   if (inherits(x,"fd") & (inherits(cov,"bifd") | inherits(cov,"pca.fd") | inherits(cov,"eigen.fd"))) datatype="fd" else if
      (inherits(x,"numeric") & (inherits(cov,"matrix") | inherits(cov,"list"))) datatype="vector" else stop ("The format of data is unknown")
@@ -67,21 +66,6 @@ fregion.test <- function(x, x0=0, cov, N=1, type=c("Ec"), pc.cut=c(0.99), prec=N
   e.cov <- cov
   if (inherits(cov,"bifd")) e.cov <- eigen.fd(cov)
   if (inherits(cov,"matrix")) e.cov <- eigen(cov)
-
-  #if (class(cov) == "matrix") {
-  #  if (dim(cov)[1] != dim(cov)[2]) stop("Covariance matrix is not square")
-  #  cov <- eigen(cov) # take eigen decomposition
-  #} else if (class(cov) == "list") {
-  #  if  ((sum(names(cov) == c("values", "vectors"))!=2)) stop("The format of 'cov' is not known -- a list, but not an eigen decomposition of a matrix")
-  #} else if (class(cov) == "bifd") {
-  #  cov.fd <- cov
-  #} else if (class(cov) == "bifd")
-  # 3. For all vector valued data, check whether dimensions match.
-  # for matrix 'x', or 'x0', change them to vectors
-  # if (class(x)=="matrix") { if (min(dim(x))!=1) stop("x should be a vector") else x <- as.vector(x) }
-  # if (class(x0)=="matrix") { if (min(dim(x0))!=1) stop("x0 should be a vector") else x0 <- as.vector(x0) }
-  # if x0 is null, make zero function. If not, check type and dimension
-  # if (is.null(x0)) x0 <- numeric(p) else if (!(class(x0)=="numeric" & length(x0)==p)) stop("x0 doesn't seem to be a vector of the same length with x")
 
   # Trim cov to have all non-negative eigenvalues
   e.cov$values[e.cov$values < .Machine$double.eps] <- 0
@@ -114,7 +98,7 @@ fregion.test <- function(x, x0=0, cov, N=1, type=c("Ec"), pc.cut=c(0.99), prec=N
     if ("Rz1s" %in% type)   pval.Rz1s  <- fregion::get.pval.Rz1s(x=x,N=N,eigen=e.cov,fpc.cut=cut,hat.cov=hat.cov,df=df)
 
     names.pval <- ls(pattern=glob2rx("pval.*"))
-    pvalues <- sapply(names.pval,get,inherits=FALSE,envir=1)
+    pvalues <- sapply(names.pval,get,inherits=FALSE,envir=environment()) #,envir=1
     names(pvalues) <- sub("pval.","",names(pvalues))
     pvalues <- c(pc.cut[i],cut,pvalues)
     result <- rbind(result,pvalues)
