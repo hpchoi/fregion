@@ -84,7 +84,7 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
     x.v <- x
   }
   p <- dim(cov.m)[1]
-
+  if (!isSymmetric(cov.m)) cov.m <- (cov.m + t(cov.m))/2  # force cov.m to be symmetric
 
   ## Take loop for conf.level
   result <- as.matrix(x.v,ncol=1) ;
