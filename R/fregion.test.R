@@ -83,7 +83,7 @@ fregion.test <- function(x, x0=0, cov, N=1, type=c("Ec"), pc.cut=c(0.99), prec=N
        if (cut < 1) cut <- get.req.n.pc(cut,e.cov$values) else {
           if (cut != round(cut)) {cut=round(cut) ; print("fpc.cut[",i,"] was rounded to the closest integer")}
        }
-    }
+    }  # value 'Inf' can survive
   #####################################################
 
     # 6. Run tests ; If 'ALL' is included then run all the tests
