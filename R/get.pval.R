@@ -1,9 +1,13 @@
 #' @export
 get.pval.Enorm <- function(x, N = 1, eigen, fpc.cut=NULL, prec=NULL){ ## prec : precision option for CompQuadForm::imhof
   if (is.null(prec)) {prec <- c(10^(-6),10^(-6),10000)}
-  if (is.null(fpc.cut)) {fpc.cut <- sum(eigen$values > .Machine$double.eps)}
-  if (inherits(x,"fd")) {Enorm <- N * sum( inprod(x,eigen$harmonics[1:fpc.cut])^2) } else  ## fd object
-                        {Enorm <- N * sum( crossprod(x,eigen$vectors[,1:fpc.cut])^2 ) }            ## vector
+  if (is.null(fpc.cut)){
+    if (inherits(x,"fd")) {Enorm <- N * inprod(x,x) } else  ## fd object
+                          {Enorm <- N * crossprod(x) }            ## vector
+  } else {
+    if (inherits(x,"fd")) {Enorm <- N * sum( inprod(x,eigen$harmonics[1:fpc.cut])^2) } else  ## fd object
+                          {Enorm <- N * sum( crossprod(x,eigen$vectors[,1:fpc.cut])^2 ) }            ## vector
+  }
   CompQuadForm::imhof(Enorm,eigen$values[1:fpc.cut],epsabs=prec[1],epsrel=prec[2],limit=prec[3])[[1]] ;
 }
 #' @export
