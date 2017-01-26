@@ -4,11 +4,13 @@ get.pval.Enorm <- function(x, N = 1, eigen, fpc.cut=NULL, prec=NULL){ ## prec : 
   if (is.null(fpc.cut) | fpc.cut==Inf){
     if (inherits(x,"fd")) {Enorm <- N * inprod(x,x) } else  ## fd object
                           {Enorm <- N * crossprod(x) }            ## vector
+    validpc <- sum(eigen$values>0)
   } else {
     if (inherits(x,"fd")) {Enorm <- N * sum( inprod(x,eigen$harmonics[1:fpc.cut])^2) } else  ## fd object
                           {Enorm <- N * sum( crossprod(x,eigen$vectors[,1:fpc.cut])^2 ) }            ## vector
+    validpc <- fpc.cut
   }
-  CompQuadForm::imhof(Enorm,eigen$values[1:fpc.cut],epsabs=prec[1],epsrel=prec[2],limit=prec[3])[[1]] ;
+  CompQuadForm::imhof(Enorm,eigen$values[1:validpc],epsabs=prec[1],epsrel=prec[2],limit=prec[3])[[1]] ;
 }
 #' @export
 get.pval.Epc <- function(x, N = 1, eigen, fpc.cut=NULL){
