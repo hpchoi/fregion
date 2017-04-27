@@ -60,7 +60,7 @@
 fregion.test <- function(x, x0=0, cov, N=1, type=c("Ec"), pc.cut=c(0.99), prec=NULL, hat.cov=NULL, df=NULL){
   ### 1. Check the data type ###
   if (inherits(x,"fd") & (inherits(cov,"bifd") | inherits(cov,"pca.fd") | inherits(cov,"eigen.fd"))) datatype="fd" else if
-     (inherits(x,"numeric") & (inherits(cov,"matrix") | inherits(cov,"list"))) datatype="vector" else stop ("The format of data is unknown")
+     (inherits(x,"numeric") & (inherits(cov,"matrix") | inherits(cov,"list") | inherits(cov,"eigen"))) datatype="vector" else stop ("The format of data is unknown")
 
   ### 2. If covariance is given as it is (not eigen decomposition), take eigen decomposition.
   e.cov <- cov
