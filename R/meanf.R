@@ -7,3 +7,12 @@ meanf.peak <- function(x,params=c(0,1,2,16,1)){
   peak[peak<0] <- 0   #params=c(shift,scale,peak-top,peak-sharpness,peak-power )
   params[2] * (params[1] + peak)
 }
+
+#' @export
+meanf.scale <- function(x, delta=0){ meanf.poly(x,c(0,1+delta)) }
+
+#' @export
+meanf.shift <- function(x, delta=0){ meanf.poly(x,c(delta,1)) }
+
+#' @export
+meanf.localshift <- function(x, delta=0){ meanf.peak(x, c(0,1,1+delta,10,1)) }
