@@ -68,7 +68,8 @@ get.pval.Rzs <- function(x, N = 1, eigen, fpc.cut=NULL, hat.cov=NULL, df=NULL){
   if (inherits(x,"fd")) {Ts.actual <- abs( sqrt(N) * inprod(x, eigen$harmonics[1:fpc.cut] )   / sqrt(tilde.lambda[1:fpc.cut]))} else
                         {Ts.actual <- abs( sqrt(N) * crossprod(x, eigen$vectors[,1:fpc.cut] ) / sqrt(tilde.lambda[1:fpc.cut]))}
   if (is.null(df)) {df=N-1}
-  min(1-exp(sum(eigen$values[1:fpc.cut]) / eigen$values[1:fpc.cut] * log(pt2(Ts.actual,df=df))))
+  # min(1-exp(sum(eigen$values[1:fpc.cut]) / eigen$values[1:fpc.cut] * log(pt2(Ts.actual,df=df))))
+  min(1-exp(sum(tilde.lambda[1:fpc.cut]) / tilde.lambda[1:fpc.cut] * log(pt2(Ts.actual,df=df))))
 }
 #' @export
 get.pval.Rz1s <- function(x, N = 1, eigen, fpc.cut=NULL, hat.cov=NULL, df=NULL){
@@ -82,7 +83,9 @@ get.pval.Rz1s <- function(x, N = 1, eigen, fpc.cut=NULL, hat.cov=NULL, df=NULL){
                         {Ts.actual <- abs( sqrt(N) * crossprod(x, eigen$vectors[,1:fpc.cut] ) / sqrt(tilde.lambda[1:fpc.cut]))}
   if (is.null(df)) {df=N-1}
   Zs.actual <- qnorm2(pt2(Ts.actual,df=df))
-  M.star <- max(sqrt(2*pi) * eigen$values[1:fpc.cut] * fregion::sf.f1(Zs.actual))
-  Zs.star <- sapply(M.star / (sqrt(2*pi) * eigen$values[1:fpc.cut]), fregion::sf.f1.inv)
+  # M.star <- max(sqrt(2*pi) * eigen$values[1:fpc.cut] * fregion::sf.f1(Zs.actual))
+  # Zs.star <- sapply(M.star / (sqrt(2*pi) * eigen$values[1:fpc.cut]), fregion::sf.f1.inv)
+  M.star <- max(sqrt(2*pi) * tilde.lambda[1:fpc.cut] * fregion::sf.f1(Zs.actual))
+  Zs.star <- sapply(M.star / (sqrt(2*pi) * tilde.lambda[1:fpc.cut]), fregion::sf.f1.inv)
   1 - prod(pnorm2(Zs.star))
 }

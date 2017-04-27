@@ -36,6 +36,17 @@ get.crit.Rz1 <- function(lambdas,prob){  ## Minimize Size ##
 }
 
 #' @export
+get.crit.Rz0 <- function(lambdas,prob){  ## Minimize Size ##
+  if (!is.null(dim(lambdas)[2])) {
+    lambdas <- eigen(lambdas)$values   # May Feed either eigenvalues or cov.matrix
+    lambdas <- lambdas[lambdas>.Machine$double.eps]
+  }
+  #l <- length(lambdas)
+  #qnorm2(exp(rep(1/l, l) * log(prob)))
+  qnorm2(exp(lambdas^{0.37} / sum(lambdas^{0.37}) * log(prob)))
+}
+
+#' @export
 get.crit.Rzs <- function(lambdas,prob,df){ qt2(pnorm2(get.crit.Rz(lambdas,prob)),df) }
 
 #' @export

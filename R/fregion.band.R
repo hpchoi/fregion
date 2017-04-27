@@ -130,6 +130,21 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
       colnames(result) <- tmp.colnames
     }
 
+    if ("BRz" %in% type) {
+      tmp.colnames <- c(colnames(result), paste0("BRz.u.",level), paste0("BRz.l.",level))
+      BRz <- make.band.BRz(eigen=eigen.cov.m, conf.level=level) / sqrt(N)
+      result <- cbind(result, x.v + BRz, x.v - BRz);
+      colnames(result) <- tmp.colnames
+    }
+
+    if ("BRz0" %in% type) {
+      tmp.colnames <- c(colnames(result), paste0("BRz0.u.",level), paste0("BRz0.l.",level))
+      BRz0 <- make.band.BRz0(eigen=eigen.cov.m, conf.level=level) / sqrt(N)
+      result <- cbind(result, x.v + BRz0, x.v - BRz0);
+      colnames(result) <- tmp.colnames
+    }
+
+
     tmpJs.location <- grep("BEPC.",type)
     if (length(tmpJs.location) > 0) {
       tmpJs <- as.integer(sub("BEPC.","",type[tmpJs.location]))

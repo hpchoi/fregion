@@ -52,3 +52,41 @@ make.band.naive.t <- function(cov, conf.level, df, fd.eval.grid.size=200){
     return(Data2fd(evalgrid,band.eval,basisobj=cov$sbasis))
   } else return(band.eval)
 }
+
+#' @export
+make.band.BRz <- function(eigen, conf.level, fd.eval.grid.size=200){
+  #alpha.level <- 1-conf.level
+  pc.to.use <- sum(eigen$values > .Machine$double.eps)
+  z <- get.crit.Rz(eigen$values[1:pc.to.use],conf.level)
+  pc.to.use <- sum(z < Inf);
+  z <- z[1:pc.to.use]
+  c.square.xi <- z^2 * eigen$values[1:pc.to.use]
+  if (inherits(eigen,"pca.fd") | inherits(eigen,"eigen.fd")) {
+    evalgrid <- fregion::make.grid(p=fd.eval.grid.size, rangevals=eigen$harmonics$basis$rangeval)
+    eigen$vectors <- eval.fd(evalgrid,eigen$harmonics)
+  }
+  band.eval <- sqrt(apply(t(eigen$vectors[,1:pc.to.use]^2) * c.square.xi, 2 ,sum))
+  if (inherits(eigen,"pca.fd") | inherits(eigen,"eigen.fd")) {
+    return(Data2fd(evalgrid,band.eval,basisobj=eigen$harmonics$basis)) # return as fd object
+  } else return(band.eval)                                               # return as vector
+}
+
+#' @export
+make.band.BRz0 <- function(eigen, conf.level, fd.eval.grid.size=200){
+  #alpha.level <- 1-conf.level
+  pc.to.use <- sum(eigen$values > .Machine$double.eps)
+  z <- get.crit.Rz0(eigen$values[1:pc.to.use],conf.level)
+  pc.to.use <- sum(z < Inf);
+  z <- z[1:pc.to.use]
+  c.square.xi <- z^2 * eigen$values[1:pc.to.use]
+  if (inherits(eigen,"pca.fd") | inherits(eigen,"eigen.fd")) {
+    evalgrid <- fregion::make.grid(p=fd.eval.grid.size, rangevals=eigen$harmonics$basis$rangeval)
+    eigen$vectors <- eval.fd(evalgrid,eigen$harmonics)
+  }
+  band.eval <- sqrt(apply(t(eigen$vectors[,1:pc.to.use]^2) * c.square.xi, 2 ,sum))
+  if (inherits(eigen,"pca.fd") | inherits(eigen,"eigen.fd")) {
+    return(Data2fd(evalgrid,band.eval,basisobj=eigen$harmonics$basis)) # return as fd object
+  } else return(band.eval)                                               # return as vector
+}
+
+
