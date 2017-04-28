@@ -62,7 +62,7 @@ fregion.band <- function(x, cov, N=1, type=c("Bs", "BEc"), conf.level=c(0.95), g
 
   ### 1. Check the data type ###
   if (inherits(x,"fd") & (inherits(cov,"bifd") | inherits(cov,"pca.fd") | inherits(cov,"eigen.fd"))) datatype="fd" else if
-     (inherits(x,"numeric") & (inherits(cov,"matrix") | inherits(cov,"list") | inherits(cov,"eigen") )) datatype="vector" else stop ("The format of data is unknown")
+     ((inherits(x,"numeric") | inherits(x,"matrix"))  & (inherits(cov,"matrix") | inherits(cov,"list") | inherits(cov,"eigen") )) datatype="vector" else stop ("The format of data is unknown")
 
   ### 2. Evaluate x and cov ###
   # evaluate x and cov if datatype is "fd".

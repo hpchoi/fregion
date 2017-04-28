@@ -1,8 +1,8 @@
 Package: fregion
 Type: Package
 Title: Confidence Regions and Bands for Functional Data
-Version: 0.0933
-Date: 2017-01-25
+Version: 0.0934
+Date: 2017-04-27
 Authors@R: person("Hyunphil", "Choi", email = "phil0808@gmail.com", role = c("aut", "cre"))
 Description: This package provides inferential tools for functional parameters when Gaussian estimators are in place.
 License: GPL-3
@@ -10,4 +10,4 @@ Imports:
      CompQuadForm,
      fda
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

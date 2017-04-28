@@ -79,4 +79,3 @@ b.fd <- fregion.band(hat.mu.fd,hat.cov.fd,N=N,type=c("Bs","BEc"), conf.level=c(0
 plot(b.fd)
 
 }
-

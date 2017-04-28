@@ -17,4 +17,3 @@
 \description{
 Visualizes rectangular confidence regions achieved from \link{fregion.rect}.
 }
-

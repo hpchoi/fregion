@@ -76,4 +76,3 @@ e.hat.cov.fd <- eigen.fd(hat.cov.fd)   # <- This is optional and can be provide 
 (a1.fd=fregion.test(hat.mu.fd,mu0.fd,hat.cov.fd,N,type=c("ALL"),pc.cut=c(1,3,4,5,0.99,0.999)))
 
 }
-

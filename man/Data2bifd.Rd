@@ -30,4 +30,3 @@ Data2bifd(sargvals = NULL, targvals = NULL, y = NULL, sbasisobj = NULL,
 \description{
 Creates a bifd object from a matrix.
 }
-

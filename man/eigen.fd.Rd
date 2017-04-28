@@ -12,4 +12,3 @@ eigen.fd(cov.fd)
 \description{
 Takes eigen decomposition of bifd covariance object.
 }
-

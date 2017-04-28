@@ -21,4 +21,3 @@
 \description{
 Visualizes confidence bands constructed from \link{fregion.band}.
 }
-

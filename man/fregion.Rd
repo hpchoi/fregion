@@ -68,4 +68,3 @@ plot(b.fd)
 c.fd <- fregion.rect(hat.mu.fd-mu0.fd,hat.cov.fd,N=N)
 plot(c.fd)
 }
-

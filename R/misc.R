@@ -12,7 +12,7 @@ make.grid <- function(p=100,rangevals=c(0,1),type="open"){
     seq(0, 1, by=1/p) * (rangevals[2] - rangevals[1]) + rangevals[1]
 }
 #' @export
-make.cov.m <- function(cov.f=cov.f.st.matern, grid=100, cov.f.params=NULL){  ### Make cov. matrix from cov. function.
+make.cov.m <- function(cov.f=covf.st.matern, grid=100, cov.f.params=NULL){  ### Make cov. matrix from cov. function.
   if (length(grid)==1) {grid=make.grid(p=grid)} ## input grid as a single number (as grid size), or as vector (actual grid)
   grid.size <- length(grid)
   cov.m <- matrix(0,nrow=grid.size,ncol=grid.size)
