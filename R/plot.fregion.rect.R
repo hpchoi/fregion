@@ -5,7 +5,9 @@
 #' @param grid.size Since this function makes plots, fd objects are evaluated and gird.size determines how find the grid should be.
 #' @export
 
-plot.fregion.rect <- function(rect,npc=NULL,returntype=NULL,main=NULL,xlab=NULL,ylab=NULL,grid.size=200){
+plot.fregion.rect <- function(rect,npc=NULL,blegend=TRUE,returntype=NULL,grid.size=200,...){
+
+  gp <- list(...)
 
   if (is.null(rect$harmonics)) {datatype="vector"} else {datatype="fd"}
   if (datatype=="fd") {evalgrid <- make.grid(grid.size, rangevals=rect$harmonics$basis$rangeval)}
@@ -33,11 +35,11 @@ plot.fregion.rect <- function(rect,npc=NULL,returntype=NULL,main=NULL,xlab=NULL,
 
     ## Plot as Coefficient ###
     plotmargin <- (max(y0.u) - min(y0.l))*0.1
-    if (is.null(main)) main.intervals <- "Marginal Intervals for Each PC" else main.intervals <- main
 
     plot(x,y0,pch="*",cex=2,ylim=c(min(y0.l)-plotmargin,max(y0.u)+plotmargin),
-         main=main.intervals,
+         main="Marginal Intervals for Each PC",
          xlab="PC",ylab="Absolute Coefficients with Marginal Intervals", xaxt='n')
+
     axis(1,at=x)
     abline(h=0,col="grey")
     segments(x,y0.l,x,y0.u,col="red",lwd=2)
@@ -53,9 +55,6 @@ plot.fregion.rect <- function(rect,npc=NULL,returntype=NULL,main=NULL,xlab=NULL,
   }
 
   plot.band <- function(pc){
-    if (is.null(main)) main.band <- paste0("Confidence Band along PC ", pc) else main.band <- main
-    if (is.null(xlab)) xlab.band <- "" else xlab.band=xlab
-    if (is.null(ylab)) ylab.band <- "" else ylab.band=ylab
 
     if (datatype=="fd") {eigenfunction <- as.vector(eval.fd(evalgrid,rect$harmonics[pc]))} else
                         {eigenfunction <- rect$eigenfunctions[,pc]}
@@ -66,11 +65,23 @@ plot.fregion.rect <- function(rect,npc=NULL,returntype=NULL,main=NULL,xlab=NULL,
     Mat <- cbind(projection,marginalprojection.u,marginalprojection.l)
 
     if (datatype=="fd") xvalues <- evalgrid else xvalues <- rownames(rect$eigenfunctions)
-    matplot(xvalues, Mat, ylim=ylim,
-            type="l",xlab=xlab.band,ylab=ylab.band,main=main.band,
-            lwd=c(2,2,2), col=c(1,2,2), lty=c(1,3,3))
+
+    gp_band <- gp
+    if (is.null(gp_band$main)) gp_band$main <- paste0("Confidence Band along PC ", pc)
+    if (is.null(gp_band$xlab)) gp_band$xlab <- ""
+    if (is.null(gp_band$ylab)) gp_band$ylab <- ""
+    gp_band$ylim <- ylim
+    gp_band$x <- xvalues
+    gp_band$y <- Mat
+    gp_band$type <- "l"
+    gp_band$lwd <- c(2,2,2)
+    gp_band$col <- c(1,2,2)
+    gp_band$lty <- c(1,3,3)
+
+    do.call(matplot,gp_band)
+    #matplot(xvalues, Mat, ylim=ylim, type="l",xlab=xlab.band,ylab=ylab.band,main=main.band, lwd=c(2,2,2), col=c(1,2,2), lty=c(1,3,3), ...)
     abline(h=0,col="grey",lwd=0.5)
-    legend(x="topleft",lty=c(1,3),lwd=c(2,2),col=c(1,2),
+    if (blegend) legend(x="topleft",lty=c(1,3),lwd=c(2,2),col=c(1,2),
            legend=c(paste0("Actual Projection on PC ", pc), paste0("Confidence Band along PC ",pc)))
   }
 

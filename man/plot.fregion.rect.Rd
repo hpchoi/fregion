@@ -4,8 +4,8 @@
 \alias{plot.fregion.rect}
 \title{Visualizes rectangular confidence regions achieved from \link{fregion.rect}.}
 \usage{
-\method{plot}{fregion.rect}(rect, npc = NULL, returntype = NULL,
-  main = NULL, xlab = NULL, ylab = NULL, grid.size = 200)
+\method{plot}{fregion.rect}(rect, npc = NULL, blegend = TRUE,
+  returntype = NULL, grid.size = 200, ...)
 }
 \arguments{
 \item{rect}{A 'fregion.rect' object, the output from \link{fregion.rect} funciton.}
